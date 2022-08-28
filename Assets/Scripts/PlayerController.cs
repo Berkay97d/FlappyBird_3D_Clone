@@ -6,25 +6,59 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float jumpForce;
-    private Rigidbody rb;
-
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    [SerializeField] private Rigidbody rb;
+    
 
     private void Update()
     {
         Jump();
     }
 
+    private void OnGameStart()
+    {
+        StartGravity();
+    }
+
+    private void OnGameOver()
+    {
+        StopGravity();
+    }
+
+    private void OnGameRestart()
+    {
+        StartGravity();
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnGameStart += OnGameStart;
+        GameEvents.OnGameOver += OnGameOver;
+        GameEvents.OnGameRestart += OnGameRestart;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnGameStart -= OnGameStart;
+        GameEvents.OnGameOver -= OnGameOver;
+        GameEvents.OnGameRestart -= OnGameRestart;
+    }
+
+    private void StartGravity()
+    {
+        rb.useGravity = true;
+    }
+
+    private void StopGravity()
+    {
+        rb.useGravity = false;
+    }
+
     private void Jump()
     {
-        Debug.Log("Jump called");
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector3.up * jumpForce);
-            Debug.Log("KeyPressed");
+            
         }
     }
     
