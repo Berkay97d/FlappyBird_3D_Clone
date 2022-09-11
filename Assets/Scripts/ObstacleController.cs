@@ -29,7 +29,6 @@ public class ObstacleController : MonoBehaviour
 
     private void OnGameStart()
     {
-        ResetObstacles();
         isGameStarted = true;
     }
 
@@ -40,6 +39,7 @@ public class ObstacleController : MonoBehaviour
 
     private void OnGameRestart()
     {
+        ResetObstacles();
         isGameStarted = true;
     }
 
@@ -59,7 +59,7 @@ public class ObstacleController : MonoBehaviour
 
     private List<Vector3> DetectPositions()
     {
-        List<Vector3> positions = new List<Vector3>();
+        var positions = new List<Vector3>();
 
         var obstacle1 = obstacles[0].transform.position;
         var obstacle2 = obstacles[1].transform.position;
@@ -68,7 +68,7 @@ public class ObstacleController : MonoBehaviour
         positions.Add(obstacle1);
         positions.Add(obstacle2);
         positions.Add(obstacle3);
-
+        
         return positions;
     }
 

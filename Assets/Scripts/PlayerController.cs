@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Jump();
+        BalanceVelocity();
     }
 
     private void OnGameStart()
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private void OnGameRestart()
     {
         StartGravity();
+        isGameStarted = true;
     }
 
     private void OnEnable()
@@ -43,6 +45,24 @@ public class PlayerController : MonoBehaviour
         GameEvents.OnGameStart -= OnGameStart;
         GameEvents.OnGameOver -= OnGameOver;
         GameEvents.OnGameRestart -= OnGameRestart;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            GameEvents.Over();
+        }
+    }
+
+    private void BalanceVelocity()
+    {
+        var currentVelocity = new Vector3(rb.velocity.x, 20, rb.velocity.z);
+        
+        if (rb.velocity.y > 20)
+        {
+            rb.velocity = currentVelocity;
+        }
     }
 
     private void StartGravity()
