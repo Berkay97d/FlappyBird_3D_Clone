@@ -64,7 +64,6 @@ public class PanelController : MonoBehaviour
     {
         BeforeGamePanel.SetActive(false);   
     }
-
     
     
     private void ActivateGameOver()
@@ -75,6 +74,16 @@ public class PanelController : MonoBehaviour
     private void DeactivateGameOver()
     {
         GameOverPanel.SetActive(false);
+    }
+
+    public void StartGame()
+    {
+        GameEvents.Start();
+    }
+
+    public void RestartGame()
+    {
+        GameEvents.Restart();
     }
     
     

@@ -7,20 +7,54 @@ public class ObstacleController : MonoBehaviour
 {
     [SerializeField] private GameObject[] obstacles;
     [SerializeField] private float speed;
-    
+    private bool isGameStarted = false;
     private List<Vector3> obstaclePositions;
 
-    
+    private void ResetObstacles()
+    {
+        obstacles[0].transform.position = obstaclePositions[0];
+        obstacles[1].transform.position = obstaclePositions[1];
+        obstacles[2].transform.position = obstaclePositions[2];
+    }
     
     private void Start()
     {
         obstaclePositions = DetectPositions();
     }
 
-
     private void Update()
     {
         MoveObstacles();
+    }
+
+    private void OnGameStart()
+    {
+        ResetObstacles();
+        isGameStarted = true;
+    }
+
+    private void OnGameOver()
+    {
+        isGameStarted = false;
+    }
+
+    private void OnGameRestart()
+    {
+        isGameStarted = true;
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnGameStart += OnGameStart;
+        GameEvents.OnGameRestart += OnGameRestart;
+        GameEvents.OnGameOver += OnGameOver;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnGameStart -= OnGameStart;
+        GameEvents.OnGameRestart -= OnGameRestart;
+        GameEvents.OnGameOver -= OnGameOver;
     }
 
     private List<Vector3> DetectPositions()
@@ -40,6 +74,9 @@ public class ObstacleController : MonoBehaviour
 
     private void MoveObstacles()
     {
+        if (!isGameStarted)
+            return;
+        
         foreach (var obstacle in obstacles)
         {
             obstacle.transform.Translate(Vector3.left * Time.deltaTime * speed);

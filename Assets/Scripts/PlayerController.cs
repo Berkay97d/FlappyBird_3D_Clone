@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float jumpForce;
     [SerializeField] private Rigidbody rb;
-    
+    private bool isGameStarted;
 
     private void Update()
     {
@@ -17,11 +17,13 @@ public class PlayerController : MonoBehaviour
     private void OnGameStart()
     {
         StartGravity();
+        isGameStarted = true;
     }
 
     private void OnGameOver()
     {
         StopGravity();
+        isGameStarted = false;
     }
 
     private void OnGameRestart()
@@ -55,10 +57,10 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
+        if (!isGameStarted) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector3.up * jumpForce);
-            
         }
     }
     
